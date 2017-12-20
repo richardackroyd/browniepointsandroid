@@ -1,11 +1,13 @@
 package centurion.dev.browniepoints;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class pointsAdapter extends BaseAdapter {
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private ArrayList<String> allPointsAccounts = new ArrayList<String>();
+    private ArrayList<PointsAccount> allPointsAccounts = new ArrayList<PointsAccount>();
 
     public pointsAdapter(Context context) {
 
@@ -53,25 +55,26 @@ public class pointsAdapter extends BaseAdapter {
     public View getView(int position, View convertView,
                         ViewGroup parent) {
 
-        AppCompatTextView itemView;
+//        AppCompatTextView itemView;
+          RelativeLayout itemView;
         if (convertView == null) {
 
-            itemView = (AppCompatTextView) mLayoutInflater.inflate(
+            itemView = (RelativeLayout) mLayoutInflater.inflate(
                     R.layout.content_points_list_view, parent, false);
         } else {
-            itemView = (AppCompatTextView) convertView;
+            itemView = (RelativeLayout) convertView;
         }
 
-        TextView titleText = (TextView)
-                itemView.findViewById(R.id.label);
+        TextView nameText = (TextView)
+                itemView.findViewById(R.id.name);
 
-        titleText.setText(allPointsAccounts.get(position));
+        nameText.setText(allPointsAccounts.get(position).name + " " + allPointsAccounts.get(position).points);
 
         return itemView;
 
     }
 
-    public void upDateEntries(ArrayList<String> pointsAccounts){
+    public void upDateEntries(ArrayList<PointsAccount> pointsAccounts){
 
         allPointsAccounts = pointsAccounts;
         notifyDataSetChanged();

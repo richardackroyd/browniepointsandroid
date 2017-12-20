@@ -1,5 +1,6 @@
 package centurion.dev.browniepoints;
 
+import android.graphics.Point;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -15,7 +16,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by rich on 25/11/2017.
  */
 
-public class pointsAPIRetriever extends AsyncTask<Void, Void, ArrayList<String>>{
+public class pointsAPIRetriever extends AsyncTask<Void, Void, ArrayList<PointsAccount>>{
 
     private final String mURL = "https://mysterious-forest-42652.herokuapp.com/api/points";
 
@@ -51,13 +52,13 @@ public class pointsAPIRetriever extends AsyncTask<Void, Void, ArrayList<String>>
     }
 
     @Override
-    protected ArrayList<String> doInBackground(Void... params) {
+    protected ArrayList<PointsAccount> doInBackground(Void... params) {
 
         InputStream source =  retrieveStream(mURL);
 
         Gson gson = new GsonBuilder().create();
 
-        ArrayList<String> allPointsAccounts = new ArrayList<String>();
+        ArrayList<PointsAccount> allPointsAccounts = new ArrayList<PointsAccount>();
 
         JsonReader jsonReader = null;
 
@@ -72,7 +73,7 @@ public class pointsAPIRetriever extends AsyncTask<Void, Void, ArrayList<String>>
 
                 pointsAccount = gson.fromJson(jsonReader, PointsAccount.class);
 
-                allPointsAccounts.add(pointsAccount.name);
+                allPointsAccounts.add(pointsAccount);
 
             }
 
@@ -84,9 +85,7 @@ public class pointsAPIRetriever extends AsyncTask<Void, Void, ArrayList<String>>
 
     }
 
-    protected void onPostExecute(ArrayList<String> allPointsAccounts) {
-
-        System.out.println(allPointsAccounts.get(1));
+    protected void onPostExecute(ArrayList<PointsAccount> allPointsAccounts) {
 
         mAdapter.upDateEntries(allPointsAccounts);
 
