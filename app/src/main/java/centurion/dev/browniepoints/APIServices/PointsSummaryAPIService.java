@@ -1,4 +1,4 @@
-package centurion.dev.browniepoints;
+package centurion.dev.browniepoints.APIServices;
 
 import android.graphics.Point;
 import android.os.AsyncTask;
@@ -16,13 +16,14 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by rich on 25/11/2017.
  */
 
-public class pointsAPIRetriever extends AsyncTask<Void, Void, ArrayList<PointsAccount>>{
+public class PointsSummaryAPIService {
+/*public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<PointsAccount>>{
 
     private final String mURL = "https://mysterious-forest-42652.herokuapp.com/api/points";
 
-    private final pointsAdapter mAdapter;
+    private final PointsSummaryAdapter mAdapter;
 
-    public pointsAPIRetriever (pointsAdapter adapter) {
+    public PointsSummaryAPIService(PointsSummaryAdapter adapter) {
 
         this.mAdapter = adapter;
 
@@ -89,6 +90,6 @@ public class pointsAPIRetriever extends AsyncTask<Void, Void, ArrayList<PointsAc
 
         mAdapter.upDateEntries(allPointsAccounts);
 
-    }
+    }*/
 
 }
