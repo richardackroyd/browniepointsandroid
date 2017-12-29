@@ -11,8 +11,11 @@ import java.util.ArrayList;
 import centurion.dev.browniepoints.APIServices.PointsSummaryAPIService;
 import centurion.dev.browniepoints.DataModel.PointsAccount;
 import centurion.dev.browniepoints.R;
+import centurion.dev.browniepoints.Util.ClickHandler;
 
 public class PointsSummaryViewer extends AppCompatActivity {
+
+    PointsSummaryAdapter pointsSummaryAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,15 @@ public class PointsSummaryViewer extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        PointsSummaryAdapter pointsSummaryAdapter = new PointsSummaryAdapter();
+        pointsSummaryAdapter = new PointsSummaryAdapter(new ClickHandler() {
+            @Override
+            public void componentClicked(int position) {
+                final int pointsAccounts = pointsSummaryAdapter.getItemCount();
+                final PointsAccount pointsAccount = pointsSummaryAdapter.getItem(position);
+                System.out.println("The number of entried is: " + pointsAccounts);
+                System.out.println("The name is: " + pointsAccount.getName());
+            }
+        });
         recyclerView.setAdapter(pointsSummaryAdapter);
         PointsSummaryAPIService pointsSummaryAPIService = new PointsSummaryAPIService(pointsSummaryAdapter);
         pointsSummaryAPIService.execute();

@@ -78,13 +78,13 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:orientation="horizontal">
 
-                <TextView
+                <Button
                     android:id="@+id/addPoint"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:clickable="false"
+                    android:clickable="true"
                     android:text="ADD"
                     android:textAllCaps="false"
                     android:textIsSelectable="false" />
