@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import centurion.dev.browniepoints.R;
 
 /**
@@ -16,12 +18,16 @@ public class PointsSummaryViewHolder extends RecyclerView.ViewHolder {
     TextView pointsAccountNameText;
     TextView pointsAccountPointsText;
     ImageView pointsAccountAvatarImage;
+//    TextView addPoints;
 
     public PointsSummaryViewHolder(View itemView) {
         super(itemView);
+
         this.pointsAccountNameText = (TextView) itemView.findViewById(R.id.pointsAccountNameText);
         this.pointsAccountPointsText = (TextView) itemView.findViewById(R.id.pointsAccountPointsText);
         this.pointsAccountAvatarImage = (ImageView) itemView.findViewById(R.id.pointsAccountAvatarImage);
+//        this.addPoints = (TextView) itemView.findViewById(R.id.addPoint);
+
     }
 
 }

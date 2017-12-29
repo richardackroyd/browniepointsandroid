@@ -18,11 +18,7 @@ import centurion.dev.browniepoints.R;
 
 public class PointsSummaryAdapter extends RecyclerView.Adapter<PointsSummaryViewHolder> {
 
-    private ArrayList<PointsAccount> pointsAccounts;
-
-    public PointsSummaryAdapter(ArrayList<PointsAccount> pointsAccounts) {
-        this.pointsAccounts = pointsAccounts;
-    }
+    private ArrayList<PointsAccount> pointsAccounts = new ArrayList<PointsAccount>();
 
     @Override
     public PointsSummaryViewHolder onCreateViewHolder(ViewGroup parent,
@@ -43,13 +39,20 @@ public class PointsSummaryAdapter extends RecyclerView.Adapter<PointsSummaryView
 
         pointsAccountNameText.setText(pointsAccounts.get(listPosition).getName());
         pointsAccountPointsText.setText(Integer.toString(pointsAccounts.get(listPosition).getPoints()));
-        pointsAccountAvatarImage.setImageResource(R.drawable.potatobravas_1);
+        pointsAccountAvatarImage.setImageResource(R.drawable.redsquare);
     }
 
     @Override
     public int getItemCount() {
+
         return pointsAccounts.size();
     }
 
+    public void upDateEntries(ArrayList<PointsAccount> pointsAccounts){
+
+        this.pointsAccounts = pointsAccounts;
+        notifyDataSetChanged();
+
+    }
 
 }
