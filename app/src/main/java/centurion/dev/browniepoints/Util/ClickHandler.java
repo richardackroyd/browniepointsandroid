@@ -6,6 +6,6 @@ package centurion.dev.browniepoints.Util;
 
 public interface ClickHandler {
 
-    void componentClicked(final int position);
+    void componentClicked(final int position, final int actionToTake);
 
 }

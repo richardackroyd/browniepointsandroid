@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import javax.net.ssl.HttpsURLConnection;
 import centurion.dev.browniepoints.DataModel.PointsAccount;
 import centurion.dev.browniepoints.Screens.PointsSummary.PointsSummaryAdapter;
@@ -24,7 +26,6 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
     private final PointsSummaryAdapter pointsSummaryAdapter;
 
     public PointsSummaryAPIService(PointsSummaryAdapter adapter) {
-        System.out.println("Got this far 1");
 
         this.pointsSummaryAdapter = adapter;
 
@@ -36,6 +37,7 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
 
             URL pointsSummaryEndPoint = new URL(mURL);
 
+            //TODO update to HTTPClient as more robust
             HttpsURLConnection myConnection =
                     (HttpsURLConnection) pointsSummaryEndPoint.openConnection();
 
@@ -53,17 +55,22 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
 
     }
 
+    //TODO refactor as too large
+
     @Override
     protected ArrayList<PointsAccount> doInBackground(Void... params) {
 
-        System.out.println("Got this far 2");
-
-
         InputStream source =  retrieveStream(mURL);
 
-        Gson gson = new GsonBuilder().create();
-
         ArrayList<PointsAccount> allPointsAccounts = new ArrayList<PointsAccount>();
+
+        //TODO stops crash if no network connection - should replace with local data caching or an error message
+
+        if ( source == null ) {
+            return allPointsAccounts;
+        }
+
+        Gson gson = new GsonBuilder().create();
 
         JsonReader jsonReader = null;
 
@@ -86,15 +93,13 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
 
         } catch (Exception e){System.out.println("Exception: " + e); return null;}
 
-        System.out.println("Got this far 3");
-
         return allPointsAccounts;
 
     }
 
     protected void onPostExecute(ArrayList<PointsAccount> allPointsAccounts) {
 
-        System.out.println("Got this far");
+        Collections.sort(allPointsAccounts);
 
         pointsSummaryAdapter.upDateEntries(allPointsAccounts);
 

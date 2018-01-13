@@ -6,10 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import java.util.ArrayList;
 
 import centurion.dev.browniepoints.APIServices.PointsSummaryAPIService;
-import centurion.dev.browniepoints.DataModel.PointsAccount;
 import centurion.dev.browniepoints.R;
 import centurion.dev.browniepoints.Util.ClickHandler;
 
@@ -28,15 +26,21 @@ public class PointsSummaryViewer extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //TODO sort out the decision making for actions - try to move closer to the button and not have the logic here
         pointsSummaryAdapter = new PointsSummaryAdapter(new ClickHandler() {
             @Override
-            public void componentClicked(int position) {
-                final int pointsAccounts = pointsSummaryAdapter.getItemCount();
-                final PointsAccount pointsAccount = pointsSummaryAdapter.getItem(position);
-                System.out.println("The number of entried is: " + pointsAccounts);
-                System.out.println("The name is: " + pointsAccount.getName());
+            public void componentClicked(int position, int actionToTake) {
+
+                switch(actionToTake) {
+                    case 0: pointsSummaryAdapter.removePointFromAccount(position);
+                            break;
+                    case 1: pointsSummaryAdapter.addPointToAccount(position);
+                            break;
+                }
             }
         });
+
         recyclerView.setAdapter(pointsSummaryAdapter);
         PointsSummaryAPIService pointsSummaryAPIService = new PointsSummaryAPIService(pointsSummaryAdapter);
         pointsSummaryAPIService.execute();

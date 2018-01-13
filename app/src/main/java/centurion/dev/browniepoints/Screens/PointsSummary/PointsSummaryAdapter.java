@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import centurion.dev.browniepoints.APIServices.ChangePointsAPIService;
 import centurion.dev.browniepoints.DataModel.PointsAccount;
+import centurion.dev.browniepoints.DataModel.PointsToChange;
 import centurion.dev.browniepoints.R;
 import centurion.dev.browniepoints.Util.ClickHandler;
 
@@ -22,12 +24,6 @@ public class PointsSummaryAdapter extends RecyclerView.Adapter<PointsSummaryView
 
     private ArrayList<PointsAccount> pointsAccounts = new ArrayList<PointsAccount>();
     private ClickHandler clickHandler;
-
-    public PointsSummaryAdapter() {
-
-        super();
-
-    }
 
     public PointsSummaryAdapter (final ClickHandler clickHandler) {
 
@@ -68,11 +64,44 @@ public class PointsSummaryAdapter extends RecyclerView.Adapter<PointsSummaryView
 
     }
 
+    //TODO break out the call to the API as a separate function (repeated code in add / remove function)
+
+    public void addPointToAccount(int position) {
+
+        pointsAccounts.get(position).setPoints(pointsAccounts.get(position).getPoints() + 1);
+
+        PointsToChange pointsToChange =
+                new PointsToChange(pointsAccounts.get(position).getId(), 1);
+
+        ChangePointsAPIService changePointsAPIService = new ChangePointsAPIService(pointsToChange);
+        changePointsAPIService.execute();
+
+        dataSetChanged();
+
+    }
+
+    public void removePointFromAccount(int position) {
+
+        pointsAccounts.get(position).setPoints(pointsAccounts.get(position).getPoints() - 1);
+
+        PointsToChange pointsToChange =
+                new PointsToChange(pointsAccounts.get(position).getId(), -1);
+
+        ChangePointsAPIService changePointsAPIService = new ChangePointsAPIService(pointsToChange);
+        changePointsAPIService.execute();
+
+        dataSetChanged();
+
+    }
+
     public void upDateEntries(ArrayList<PointsAccount> pointsAccounts){
 
         this.pointsAccounts = pointsAccounts;
-        notifyDataSetChanged();
+        dataSetChanged();
 
     }
+
+    //Broke out as a utility in case wanting to take specific common actions on data set changing
+    private void dataSetChanged() {notifyDataSetChanged();}
 
 }
