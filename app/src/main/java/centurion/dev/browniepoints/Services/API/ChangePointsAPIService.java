@@ -1,31 +1,19 @@
-package centurion.dev.browniepoints.APIServices;
+package centurion.dev.browniepoints.Services.API;
 
-import android.graphics.Point;
 import android.os.AsyncTask;
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import centurion.dev.browniepoints.DataModel.PointsAccount;
 import centurion.dev.browniepoints.DataModel.PointsToChange;
-import centurion.dev.browniepoints.Screens.PointsSummary.PointsSummaryAdapter;
 
 /**
  * Created by rich on 31/12/2017.

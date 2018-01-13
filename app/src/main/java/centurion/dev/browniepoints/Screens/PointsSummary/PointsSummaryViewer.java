@@ -1,5 +1,6 @@
 package centurion.dev.browniepoints.Screens.PointsSummary;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
-import centurion.dev.browniepoints.APIServices.PointsSummaryAPIService;
+import centurion.dev.browniepoints.Services.API.PointsSummaryAPIService;
 import centurion.dev.browniepoints.R;
 import centurion.dev.browniepoints.Util.ClickHandler;
 
@@ -42,7 +43,9 @@ public class PointsSummaryViewer extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(pointsSummaryAdapter);
-        PointsSummaryAPIService pointsSummaryAPIService = new PointsSummaryAPIService(pointsSummaryAdapter);
+        //TODO add context in here to draw shared preference capability for offline data store
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("myfile", getApplicationContext().MODE_PRIVATE);
+        PointsSummaryAPIService pointsSummaryAPIService = new PointsSummaryAPIService(pointsSummaryAdapter, sharedPreferences);
         pointsSummaryAPIService.execute();
     }
 

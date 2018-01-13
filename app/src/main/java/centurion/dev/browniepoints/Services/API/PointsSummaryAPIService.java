@@ -1,5 +1,6 @@
-package centurion.dev.browniepoints.APIServices;
+package centurion.dev.browniepoints.Services.API;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import javax.net.ssl.HttpsURLConnection;
 import centurion.dev.browniepoints.DataModel.PointsAccount;
 import centurion.dev.browniepoints.Screens.PointsSummary.PointsSummaryAdapter;
+import centurion.dev.browniepoints.Services.SharedPreference.PointsSummarySPService;
 
 /**
  * Created by rich on 25/11/2017.
@@ -25,9 +27,12 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
 
     private final PointsSummaryAdapter pointsSummaryAdapter;
 
-    public PointsSummaryAPIService(PointsSummaryAdapter adapter) {
+    private final SharedPreferences sharedPreferences;
+
+    public PointsSummaryAPIService(PointsSummaryAdapter adapter, SharedPreferences sharedPreferences) {
 
         this.pointsSummaryAdapter = adapter;
+        this.sharedPreferences = sharedPreferences;
 
     }
 
@@ -64,9 +69,13 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
 
         ArrayList<PointsAccount> allPointsAccounts = new ArrayList<PointsAccount>();
 
-        //TODO stops crash if no network connection - should replace with local data caching or an error message
+        PointsSummarySPService pointsSummarySPService = new PointsSummarySPService(sharedPreferences);
+
+        //TODO 1 stops crash if no network connection - should replace with local data caching or an error message
 
         if ( source == null ) {
+            //TODO 1.1 this needs to return the allPointsAccounts array in place of the API call based on last cache
+            pointsSummarySPService.runvalues();
             return allPointsAccounts;
         }
 
@@ -92,6 +101,8 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
             jsonReader.close();
 
         } catch (Exception e){System.out.println("Exception: " + e); return null;}
+
+        //TODO 1.2 this needs to update the SharedPreferences cache with latest data deseriablised to name:value pairs
 
         return allPointsAccounts;
 
