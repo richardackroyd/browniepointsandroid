@@ -74,7 +74,7 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
         //TODO 1 stops crash if no network connection - should replace with local data caching or an error message
 
         if ( source == null ) {
-            //TODO 1.1 this needs to return the allPointsAccounts array in place of the API call based on last cache
+            //TODO 1.2 this needs to return the allPointsAccounts array in place of the API call based on last cache
             pointsSummarySPService.runvalues();
             return allPointsAccounts;
         }
@@ -102,7 +102,9 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
 
         } catch (Exception e){System.out.println("Exception: " + e); return null;}
 
-        //TODO 1.2 this needs to update the SharedPreferences cache with latest data deseriablised to name:value pairs
+        //TODO 1.1 this needs to update the SharedPreferences cache with latest data deseriablised to name:value pairs
+
+        pointsSummarySPService.setValues(allPointsAccounts);
 
         return allPointsAccounts;
 
