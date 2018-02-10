@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
 import org.json.JSONObject;
@@ -32,9 +33,9 @@ public class PointsSummarySPService {
 
     }
 
-    public void runvalues() {
+    public ArrayList<PointsAccount> runvalues() {
 
-        int retrievedResult;
+/*        int retrievedResult;
         retrievedResult = sharedPreferences.getInt("score", 0);
         System.out.println("runvalues: " + retrievedResult);
 
@@ -50,15 +51,23 @@ public class PointsSummarySPService {
 
         System.out.println("This is the GSON output: " + jsonAllPointsAccounts);
 
-//TODO this test above shows the GSON serialization works and this can potentially be converted to the shared preferences
+//TODO this test above shows the GSON serialization works and this can potentially be converted to the shared preferences*/
 
-
-
-        String jsonString1 = sharedPreferences.getString("jsondata", "0");
+        String jsonString1 = sharedPreferences.getString("jsonPointsAccounts", "No Data");
 
         System.out.println("JSON Data: " + jsonString1);
 
-        //TODO use the GSON example
+        Gson gson = new GsonBuilder().create();
+
+        ArrayList<PointsAccount> pointsAccounts = gson.fromJson(jsonString1, new TypeToken<ArrayList<PointsAccount>>(){}.getType());
+
+        pointsAccounts.forEach(x -> System.out.println(x.getName()));
+
+        return pointsAccounts;
+
+        //PointsAccount pointsAccount = gson.fromJson(jsonString1, PointsAccount.class);
+
+/*        //TODO use the GSON example
 
         try {
 
@@ -103,46 +112,21 @@ public class PointsSummarySPService {
 */
     }
 
+    //TODO URGENT: This does not currently store the data in the sharedpreference object - need to resolve so can be used
+
 //    public void setValues(JsonReader jsonReader) {
       public void setValues(ArrayList<PointsAccount> allPointsAccounts) {
-        editor.putInt("score", 10);
 
-        PointsAccount pointsAccount;
+          Gson gson = new GsonBuilder().create();
 
-        Gson gson = new GsonBuilder().create();
+          String jsonAllPointsAccounts = gson.toJson(allPointsAccounts);
 
-        String jsonAllPointsAccounts = gson.toJson(allPointsAccounts);
+          System.out.println("This is the GSON output: " + jsonAllPointsAccounts);
 
-        System.out.println("This is the GSON output: " + jsonAllPointsAccounts);
+          editor.putString("jsonPointsAccounts", jsonAllPointsAccounts);
+          editor.commit();
 
-        int sharedPreferenceIteration = 0;
-
-        //TODO use the GSON example
-
-
-//        try {
-
-//            System.out.println("json object: " + jsonReader);
-  //          System.out.println("json string: " + jsonReader.toString());
-
-    //        editor.putString("jsonadata", jsonReader.toString());
-
-/*            jsonReader.beginArray();
-
-            while (jsonReader.hasNext()) {
-
-                pointsAccount = gson.fromJson(jsonReader, PointsAccount.class);
-
-                editor.putString("name" + sharedPreferenceIteration, pointsAccount.getName());
-                editor.putInt("points"+ sharedPreferenceIteration, pointsAccount.getPoints());
-                editor.putLong("id"+ sharedPreferenceIteration, pointsAccount.getId());
-
-            }*/
-
-//            jsonReader.close();
-//            editor.commit();
-
-//        } catch (Exception e) {System.out.println("Points Summary Shared Preferences setValues error: " + e);}
+          System.out.println("This is the Shared Preferences output: " + sharedPreferences.getString("jsonPointsAccounts", "No Data"));
 
     }
 

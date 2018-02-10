@@ -12,6 +12,8 @@ import centurion.dev.browniepoints.Util.ClickHandler;
  * Created by rich on 23/12/2017.
  */
 
+//Provides the model representation of a single card on the points summary screen
+
 //public class PointsSummaryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 public class PointsSummaryViewHolder extends RecyclerView.ViewHolder {
 

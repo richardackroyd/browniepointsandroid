@@ -21,6 +21,8 @@ import centurion.dev.browniepoints.Services.SharedPreference.PointsSummarySPServ
  * Created by rich on 25/11/2017.
  */
 
+//TODO can this be a general API handler - pass in all objects as interfaces and let process?
+
 public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<PointsAccount>>{
 
     private final String mURL = "https://mysterious-forest-42652.herokuapp.com/api/points";
@@ -75,8 +77,7 @@ public class PointsSummaryAPIService extends AsyncTask<Void, Void, ArrayList<Poi
 
         if ( source == null ) {
             //TODO 1.2 this needs to return the allPointsAccounts array in place of the API call based on last cache
-            pointsSummarySPService.runvalues();
-            return allPointsAccounts;
+            return pointsSummarySPService.runvalues();
         }
 
         Gson gson = new GsonBuilder().create();

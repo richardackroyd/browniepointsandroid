@@ -2,15 +2,21 @@ package centurion.dev.browniepoints.Screens.PointsSummary;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import centurion.dev.browniepoints.Services.API.PointsSummaryAPIService;
 import centurion.dev.browniepoints.R;
 import centurion.dev.browniepoints.Util.ClickHandler;
+
+//Composes and triggers the setup and build of the points summary screen
 
 public class PointsSummaryViewer extends AppCompatActivity {
 
@@ -47,6 +53,35 @@ public class PointsSummaryViewer extends AppCompatActivity {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("myfile", getApplicationContext().MODE_PRIVATE);
         PointsSummaryAPIService pointsSummaryAPIService = new PointsSummaryAPIService(pointsSummaryAdapter, sharedPreferences);
         pointsSummaryAPIService.execute();
+
+        //Set time to check data changes intermittently - currently every 5 minutes
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("myfile", getApplicationContext().MODE_PRIVATE);
+                        PointsSummaryAPIService pointsSummaryAPIService = new PointsSummaryAPIService(pointsSummaryAdapter, sharedPreferences);
+                        pointsSummaryAPIService.execute();
+                    }
+                });
+            }
+        }, 0, 300000);
+
+        final SwipeRefreshLayout swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("myfile", getApplicationContext().MODE_PRIVATE);
+                PointsSummaryAPIService pointsSummaryAPIService = new PointsSummaryAPIService(pointsSummaryAdapter, sharedPreferences);
+                pointsSummaryAPIService.execute();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
     }
 
     @Override

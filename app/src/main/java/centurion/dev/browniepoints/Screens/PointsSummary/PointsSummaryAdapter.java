@@ -18,6 +18,8 @@ import centurion.dev.browniepoints.Util.ClickHandler;
  * Created by rich on 25/11/2017.
  */
 
+//Builds the card deck for the points summary screen creating a PointsSummaryViewHolder per card
+
 public class PointsSummaryAdapter extends RecyclerView.Adapter<PointsSummaryViewHolder> {
 
     private ArrayList<PointsAccount> pointsAccounts = new ArrayList<PointsAccount>();
