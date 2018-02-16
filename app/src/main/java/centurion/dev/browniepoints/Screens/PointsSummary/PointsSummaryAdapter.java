@@ -25,10 +25,21 @@ public class PointsSummaryAdapter extends RecyclerView.Adapter<PointsSummaryView
     private ArrayList<PointsAccount> pointsAccounts = new ArrayList<PointsAccount>();
     private ClickHandler clickHandler;
 
-    public PointsSummaryAdapter (final ClickHandler clickHandler) {
+    public PointsSummaryAdapter () {
 
         super();
-        this.clickHandler = clickHandler;
+        clickHandler = new ClickHandler() {
+            @Override
+            public void componentClicked(int position, int actionToTake) {
+
+                switch(actionToTake) {
+                    case 0: removePointFromAccount(position);
+                        break;
+                    case 1: addPointToAccount(position);
+                        break;
+                }
+            }
+        };
 
     }
 
@@ -48,7 +59,10 @@ public class PointsSummaryAdapter extends RecyclerView.Adapter<PointsSummaryView
         pointsSummaryViewHolder.pointsAccountNameText.setText(pointsAccounts.get(listPosition).getName());
         pointsSummaryViewHolder.pointsAccountPointsText.setText(Integer.toString(pointsAccounts.get(listPosition).getPoints()));
         pointsSummaryViewHolder.pointsAccountAvatarImage.setImageResource(R.drawable.redsquare);
-
+        //TODO insert in here to turn off clickable when no internet connection
+        //POSS wrap return object in api service to be a list that can be extracted and a status
+        //POSS if status offline set the clickhandler to "" if not leave to process
+        //POSS might want to move the add / remove click handler creation into this class
         pointsSummaryViewHolder.clickHandler = this.clickHandler;
     }
 
