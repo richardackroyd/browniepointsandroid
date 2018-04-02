@@ -35,18 +35,7 @@ public class PointsSummaryViewer extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         //TODO sort out the decision making for actions - try to move closer to the button and not have the logic here
-        pointsSummaryAdapter = new PointsSummaryAdapter(new ClickHandler() {
-            @Override
-            public void componentClicked(int position, int actionToTake) {
-
-                switch(actionToTake) {
-                    case 0: pointsSummaryAdapter.removePointFromAccount(position);
-                            break;
-                    case 1: pointsSummaryAdapter.addPointToAccount(position);
-                            break;
-                }
-            }
-        });
+        pointsSummaryAdapter = new PointsSummaryAdapter();
 
         recyclerView.setAdapter(pointsSummaryAdapter);
         //TODO add context in here to draw shared preference capability for offline data store

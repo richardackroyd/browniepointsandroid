@@ -21,6 +21,7 @@ import centurion.dev.browniepoints.DataModel.PointsToChange;
 
 public class ChangePointsAPIService extends AsyncTask<Void, Void, String> {
 
+    //TODO move the link to be config based - how to inject config on Android for one code base ?
     private String mURL = "https://mysterious-forest-42652.herokuapp.com/api/addPoint/";
     private PointsToChange pointsToChange;
 
@@ -31,7 +32,6 @@ public class ChangePointsAPIService extends AsyncTask<Void, Void, String> {
         mURL = mURL + pointsToChange.pointsAccountID;
 
     }
-
 
     //TODO large function - refactor
 
