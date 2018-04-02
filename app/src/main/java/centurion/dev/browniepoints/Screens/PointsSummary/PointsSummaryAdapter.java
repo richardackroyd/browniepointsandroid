@@ -30,12 +30,12 @@ public class PointsSummaryAdapter extends RecyclerView.Adapter<PointsSummaryView
         super();
         clickHandler = new ClickHandler() {
             @Override
-            public void componentClicked(int position, int actionToTake) {
+            public void componentClicked(int position, int actionToTake, int pointsToChange) {
 
                 switch(actionToTake) {
-                    case 0: removePointFromAccount(position);
+                    case 0: removePointFromAccount(position, pointsToChange);
                         break;
-                    case 1: addPointToAccount(position);
+                    case 1: addPointToAccount(position, pointsToChange);
                         break;
                 }
             }
@@ -80,28 +80,41 @@ public class PointsSummaryAdapter extends RecyclerView.Adapter<PointsSummaryView
 
     //TODO break out the call to the API as a separate function (repeated code in add / remove function)
 
-    public void addPointToAccount(int position) {
+    public void addPointToAccount(int position, int pointsToChange) {
 
-        pointsAccounts.get(position).setPoints(pointsAccounts.get(position).getPoints() + 1);
+        pointsAccounts.get(position).setPoints(pointsAccounts.get(position).getPoints() + pointsToChange);
 
-        PointsToChange pointsToChange =
-                new PointsToChange(pointsAccounts.get(position).getId(), 1);
+        PointsToChange pointToChange =
+                new PointsToChange(pointsAccounts.get(position).getId(), pointsToChange);
 
-        ChangePointsAPIService changePointsAPIService = new ChangePointsAPIService(pointsToChange);
+        ChangePointsAPIService changePointsAPIService = new ChangePointsAPIService(pointToChange);
         changePointsAPIService.execute();
 
         dataSetChanged();
 
     }
 
-    public void removePointFromAccount(int position) {
+    public void removePointFromAccount(int position, int pointsToChange) {
 
-        pointsAccounts.get(position).setPoints(pointsAccounts.get(position).getPoints() - 1);
+        PointsToChange pointToChange;
 
-        PointsToChange pointsToChange =
-                new PointsToChange(pointsAccounts.get(position).getId(), -1);
+        if(pointsAccounts.get(position).getPoints() - pointsToChange >= 0) {
 
-        ChangePointsAPIService changePointsAPIService = new ChangePointsAPIService(pointsToChange);
+            pointsAccounts.get(position).setPoints(pointsAccounts.get(position).getPoints() - pointsToChange);
+
+            pointToChange =
+                    new PointsToChange(pointsAccounts.get(position).getId(), pointsToChange * -1);
+
+        } else {
+
+            pointsAccounts.get(position).setPoints(0);
+
+            pointToChange =
+                    new PointsToChange(pointsAccounts.get(position).getId(), pointsAccounts.get(position).getPoints());
+
+        }
+
+        ChangePointsAPIService changePointsAPIService = new ChangePointsAPIService(pointToChange);
         changePointsAPIService.execute();
 
         dataSetChanged();

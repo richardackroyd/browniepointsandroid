@@ -3,6 +3,7 @@ package centurion.dev.browniepoints.Screens.PointsSummary;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import centurion.dev.browniepoints.R;
@@ -22,6 +23,7 @@ public class PointsSummaryViewHolder extends RecyclerView.ViewHolder {
     ImageView pointsAccountAvatarImage;
     TextView addPoints;
     TextView removePoints;
+    EditText pointsToChange;
     ClickHandler clickHandler;
 
     public PointsSummaryViewHolder(View itemView) {
@@ -32,12 +34,18 @@ public class PointsSummaryViewHolder extends RecyclerView.ViewHolder {
         this.pointsAccountAvatarImage = (ImageView) itemView.findViewById(R.id.pointsAccountAvatarImage);
         this.addPoints = (TextView) itemView.findViewById(R.id.addPoint);
         this.removePoints = (TextView) itemView.findViewById(R.id.removePoint);
+        this.pointsToChange = (EditText) itemView.findViewById(R.id.pointsToBeUpdated);
 
         addPoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                clickHandler.componentClicked(getAdapterPosition(), 1);
+                if (!pointsToChange.getText().toString().isEmpty()) {
+                    //action: 1 = increase 0 = decrease
+                    clickHandler.componentClicked(getAdapterPosition(), 1, Integer.parseInt(pointsToChange.getText().toString()));
+
+                    pointsToChange.getText().clear();
+                }
 
             }
         });
@@ -46,19 +54,16 @@ public class PointsSummaryViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
 
-                clickHandler.componentClicked(getAdapterPosition(), 0);
+                if (!pointsToChange.getText().toString().isEmpty()) {
+                    //action: 1 = increase 0 = decrease
+                    clickHandler.componentClicked(getAdapterPosition(), 0, Integer.parseInt(pointsToChange.getText().toString()));
+
+                    pointsToChange.getText().clear();
+                }
 
             }
         });
 
     }
-
-/*    @Override
-    public void onClick(final View view) {
-        if (clickHandler != null) {
-            clickHandler.componentClicked(getAdapterPosition());
-        }
-    }*/
-
 
 }
